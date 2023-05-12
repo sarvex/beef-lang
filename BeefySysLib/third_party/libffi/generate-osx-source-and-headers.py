@@ -25,8 +25,7 @@ desktop_sdk_info = sdkinfo('macosx')
 def latest_sdks():
     latest_desktop = None
     for line in subprocess.Popen(['xcodebuild', '-showsdks'], stdout=subprocess.PIPE).stdout:
-        match = sdk_re.match(line)
-        if match:
+        if match := sdk_re.match(line):
             if 'OS X' in line:
                 latest_desktop = match.group(1)
 
@@ -64,7 +63,7 @@ def move_file(src_dir, dst_dir, filename, file_suffix=None, prefix='', suffix=''
 
     if file_suffix:
         split_name = os.path.splitext(filename)
-        out_filename =  "%s_%s%s" % (split_name[0], file_suffix, split_name[1])
+        out_filename = f"{split_name[0]}_{file_suffix}{split_name[1]}"
 
     with open(os.path.join(src_dir, filename)) as in_file:
         with open(os.path.join(dst_dir, out_filename), 'w') as out_file:
@@ -79,10 +78,7 @@ def move_file(src_dir, dst_dir, filename, file_suffix=None, prefix='', suffix=''
 headers_seen = collections.defaultdict(set)
 
 def xstr(s):
-    if s is None:
-        return '<None>'
-    else:
-        return str(s)
+    return '<None>' if s is None else str(s)
 
 def move_source_tree(src_dir, dest_dir, dest_include_dir, arch=None, prefix=None, suffix=None):
     #print "move_source_tree: " + xstr(src_dir) + " " + xstr(dest_dir) + " " + xstr(dest_include_dir) + " arch=" + xstr(arch) + " prefix=" + xstr(prefix) + " suffix=" + xstr(suffix)

@@ -16,24 +16,24 @@ def qdump__Beefy__StringImpl(d, value):
 
 def qdump__Beefy__Array(d, value):	
 	numItems = int(value["mSize"])
-	d.putValue("Size=" + str(numItems))
-	d.putNumChild(int(numItems) + 2)	
+	d.putValue(f"Size={numItems}")
+	d.putNumChild(numItems + 2)
 	if d.isExpanded():
 		with Children(d):
 			d.putIntItem("[Size]", value["mSize"])
 			d.putIntItem("[AllocSize]", value["mSize"])
-			for i in range(0, int(numItems)):				
-				d.putSubItem("[" + str(i) + "]", value["mVals"] + i)
+			for i in range(0, numItems):	
+				d.putSubItem(f"[{str(i)}]", value["mVals"] + i)
 
 def qdump__Beefy__BfSizedArray(d, value):	
 	numItems = int(value["mSize"])
-	d.putValue("Size=" + str(numItems))
-	d.putNumChild(int(numItems) + 1)
+	d.putValue(f"Size={numItems}")
+	d.putNumChild(numItems + 1)
 	if d.isExpanded():
 		with Children(d):
-			d.putIntItem("[Size]", value["mSize"])			
-			for i in range(0, int(numItems)):				
-				d.putSubItem("[" + str(i) + "]", value["mVals"] + i)
+			d.putIntItem("[Size]", value["mSize"])
+			for i in range(0, numItems):	
+				d.putSubItem(f"[{str(i)}]", value["mVals"] + i)
 
 def qdump__Beefy__BfAstNode(d, value):
 	d.putCharArrayHelper(value["mSource"]["mSrc"] + int(value["mSrcStart"]), int(value["mSrcEnd"]) - int(value["mSrcStart"]), 1)
@@ -52,11 +52,11 @@ def qdump__System__String(d, value):
 
 def qdump__System__Collections__Generic__List(d, value):	
 	numItems = int(value["mSize"])
-	d.putValue("Size=" + str(numItems))
-	d.putNumChild(int(numItems) + 2)	
+	d.putValue(f"Size={numItems}")
+	d.putNumChild(numItems + 2)
 	if d.isExpanded():
 		with Children(d):
 			d.putIntItem("[Size]", value["mSize"])
 			d.putIntItem("[AllocSize]", value["mSize"])
-			for i in range(0, int(numItems)):				
-				d.putSubItem("[" + str(i) + "]", value["mVals"] + i)
+			for i in range(0, numItems):	
+				d.putSubItem(f"[{str(i)}]", value["mVals"] + i)

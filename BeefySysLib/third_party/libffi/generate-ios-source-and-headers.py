@@ -28,8 +28,7 @@ def latest_sdks():
     latest_sim = None
     latest_device = None
     for line in subprocess.Popen(['xcodebuild', '-showsdks'], stdout=subprocess.PIPE).stdout:
-        match = sdk_re.match(line)
-        if match:
+        if match := sdk_re.match(line):
             if 'Simulator' in line:
                 latest_sim = match.group(1)
             elif 'iOS' in line:
@@ -68,7 +67,7 @@ def move_file(src_dir, dst_dir, filename, file_suffix=None, prefix='', suffix=''
 
     if file_suffix:
         split_name = os.path.splitext(filename)
-        out_filename =  "%s_%s%s" % (split_name[0], file_suffix, split_name[1])
+        out_filename = f"{split_name[0]}_{file_suffix}{split_name[1]}"
 
     with open(os.path.join(src_dir, filename)) as in_file:
         with open(os.path.join(dst_dir, out_filename), 'w') as out_file:
@@ -120,12 +119,14 @@ def build_target(platform):
     def xcrun_cmd(cmd):
         return subprocess.check_output(['xcrun', '-sdk', platform.sdkroot, '-find', cmd]).strip()
 
-    build_dir = 'build_' + platform.name
+    build_dir = f'build_{platform.name}'
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
-        env = dict(CC=xcrun_cmd('clang'),
-                   LD=xcrun_cmd('ld'),
-                   CFLAGS='-arch %s -isysroot %s -miphoneos-version-min=4.0' % (platform.arch, platform.sdkroot))
+        env = dict(
+            CC=xcrun_cmd('clang'),
+            LD=xcrun_cmd('ld'),
+            CFLAGS=f'-arch {platform.arch} -isysroot {platform.sdkroot} -miphoneos-version-min=4.0',
+        )
         working_dir=os.getcwd()
         try:
             os.chdir(build_dir)
